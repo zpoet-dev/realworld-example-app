@@ -1,0 +1,58 @@
+# Spring Boot应用配置
+server:
+  port: 3000
+
+spring:
+  # 应用名称
+  application:
+    name: realworld-springboot
+
+  # 数据源配置（HikariCP连接池）
+  datasource:
+    url: jdbc:postgresql://120.76.200.129:5432/realworld
+    username: root
+    password: u-PZ*9i~3uq9rkC8fkAvK*G~fR?ze>P~PgpFc}uaWBr0v:2h6npwc*s?ghh3,xAxrKY%~JDZJo5+jd)UD1%L8)eGAknL^RAQpCcY
+    driver-class-name: org.postgresql.Driver
+    # HikariCP 连接池配置
+    hikari:
+      minimum-idle: 5              # 最小空闲连接数
+      maximum-pool-size: 20        # 最大连接数
+      connection-timeout: 30000    # 连接超时时间（毫秒）
+      idle-timeout: 600000         # 空闲连接超时时间（10分钟）
+      max-lifetime: 1800000        # 连接最大生命周期（30分钟）
+      connection-test-query: SELECT 1  # 连接测试查询
+
+  # Jackson配置（JSON序列化）
+  jackson:
+    default-property-inclusion: non_null  # 忽略 null 值字段
+    time-zone: GMT+8                      # 时区设置
+    date-format: yyyy-MM-dd HH:mm:ss      # 日期格式
+
+# JWT 配置
+jwt:
+  # JWT密钥（生产环境建议使用环境变量）
+  secret: ${JWT_SECRET:realworld-secret-key-for-jwt-token-generation-and-validation-please-change-in-production}
+  # Token过期时间（7天，单位：毫秒）
+  expiration: ${JWT_EXPIRATION:604800000}
+  # Token 前缀
+  token-prefix: Token
+  # Header 名称
+  header-name: Authorization
+
+# MyBatis Plus配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true  # 下划线转驼峰
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # SQL日志（开发环境）
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID  # 雪花算法生成 ID
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.realworld.api: DEBUG  # 应用日志级别
+    org.springframework.security: DEBUG  # Security日志（开发环境可开启）
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n'
