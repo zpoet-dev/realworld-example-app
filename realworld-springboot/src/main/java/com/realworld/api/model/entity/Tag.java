@@ -1,0 +1,23 @@
+package com.realworld.api.model.entity;
+
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@TableName("tags")
+public class Tag {
+
+	@TableId
+	// 主键
+	private Long id;
+
+	// 标签名
+	private String tagName;
+}

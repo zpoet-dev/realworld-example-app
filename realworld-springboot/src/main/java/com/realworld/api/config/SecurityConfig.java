@@ -49,8 +49,9 @@ public class SecurityConfig {
 						// 允许所有 OPTIONS 请求（CORS 预检请求）
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						// 白名单：允许未认证访问的接口
-						.requestMatchers(HttpMethod.POST, "/users").permitAll()          // 注册接口
-						.requestMatchers(HttpMethod.POST, "/users/login").permitAll()    // 登录接口
+						.requestMatchers(HttpMethod.POST, "/users").permitAll()            // 注册接口
+						.requestMatchers(HttpMethod.POST, "/users/login").permitAll()      // 登录接口
+						.requestMatchers(HttpMethod.GET, "/tags").permitAll()              // 获取全部标签接口
 						// 其他所有接口都需要认证
 						.anyRequest().authenticated()
 				)
