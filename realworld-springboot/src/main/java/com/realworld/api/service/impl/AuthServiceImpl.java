@@ -87,7 +87,7 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, User> implements Au
 	 */
 	public LoginResponse login(LoginDTO loginDTO) {
 		// 根据 email 查询用户
-		LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<User>();
+		LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
 		queryWrapper.eq(User::getEmail, loginDTO.getEmail());
 		User exitedUser = getOne(queryWrapper);
 

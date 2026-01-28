@@ -70,13 +70,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 		Long currentUserId = currentUser.getId();
 
 		// 更新用户信息
-		LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<User>();
+		LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
 		updateWrapper.eq(User::getId, currentUserId)
 				.set(User::getEmail, updateCurrentUserDTO.getEmail());
 		update(updateWrapper);
 
 		// 获取更新后的用户信息
-		LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<User>();
+		LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
 		queryWrapper.eq(User::getId, currentUserId);
 		User updatedUser = getOne(queryWrapper);
 
@@ -91,7 +91,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 				.image(updatedUser.getImage())
 				.token(token)
 				.build();
-		
+
 		return new UpdateUserResponse(userVO);
 	}
 }
