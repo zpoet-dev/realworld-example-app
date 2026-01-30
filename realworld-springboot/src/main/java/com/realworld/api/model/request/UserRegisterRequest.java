@@ -1,7 +1,7 @@
 package com.realworld.api.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.realworld.api.model.dto.user.UserRegisterDTO;
+import com.realworld.api.model.dto.UserRegisterDTO;
 import lombok.Data;
 
 /**

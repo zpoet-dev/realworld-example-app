@@ -1,8 +1,8 @@
 package com.realworld.api.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.realworld.api.model.dto.user.LoginDTO;
-import com.realworld.api.model.dto.user.UserRegisterDTO;
+import com.realworld.api.model.dto.LoginDTO;
+import com.realworld.api.model.dto.UserRegisterDTO;
 import com.realworld.api.model.entity.User;
 import com.realworld.api.model.response.LoginResponse;
 import com.realworld.api.model.response.UserRegisterResponse;

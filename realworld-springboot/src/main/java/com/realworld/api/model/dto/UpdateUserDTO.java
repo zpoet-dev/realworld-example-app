@@ -1,4 +1,4 @@
-package com.realworld.api.model.dto.user;
+package com.realworld.api.model.dto;
 
 import lombok.Data;
 

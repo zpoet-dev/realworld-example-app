@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.realworld.api.mapper.UserMapper;
-import com.realworld.api.model.dto.user.UpdateUserDTO;
+import com.realworld.api.model.dto.UpdateUserDTO;
 import com.realworld.api.model.entity.User;
 import com.realworld.api.model.response.GetCurrentUserResponse;
 import com.realworld.api.model.response.UpdateUserResponse;
