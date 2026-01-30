@@ -3,7 +3,8 @@ package com.realworld.api.controller;
 import com.realworld.api.model.request.CreateArticleRequest;
 import com.realworld.api.model.request.UpdateArticleBySlugRequest;
 import com.realworld.api.model.response.CreateArticleResponse;
-import com.realworld.api.model.response.GetAllArticlesResponse;
+import com.realworld.api.model.response.GetArticleListResponse;
+import com.realworld.api.model.response.GetArticleResponse;
 import com.realworld.api.model.response.UpdateArticleBySlugResponse;
 import com.realworld.api.service.ArticleService;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +26,19 @@ public class ArticleController {
 		return articleService.createArticle(request.getArticle());
 	}
 
-	// 获取全部文章
+	// 条件查询获取文章列表
 	@GetMapping
-	public GetAllArticlesResponse getAllArticles() {
-		return articleService.getAllArticles();
+	public GetArticleListResponse getArticleList(
+			@RequestParam(required = false) String author,
+			@RequestParam(required = false) String tag
+	) {
+		return articleService.getArticleList(author, tag);
+	}
+
+	// 根据 slug 获取文章详情
+	@GetMapping("/{slug}")
+	public GetArticleResponse getArticleBySlug(@PathVariable String slug) {
+		return articleService.getArticleBySlug(slug);
 	}
 
 	// 更新文章
@@ -41,7 +51,7 @@ public class ArticleController {
 	@DeleteMapping("/{slug}")
 	public Map<String, Object> deleteArticleBySlug(@PathVariable String slug) {
 		articleService.deleteArticleBySlug(slug);
-		
+
 		return Collections.emptyMap();
 	}
 }

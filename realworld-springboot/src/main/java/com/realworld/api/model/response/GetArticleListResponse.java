@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetAllArticlesResponse {
+public class GetArticleListResponse {
 
 	private List<ArticleVO> articles;
 
