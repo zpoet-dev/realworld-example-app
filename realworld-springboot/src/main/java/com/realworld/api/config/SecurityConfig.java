@@ -52,6 +52,7 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.POST, "/users").permitAll()            // 注册接口
 						.requestMatchers(HttpMethod.POST, "/users/login").permitAll()      // 登录接口
 						.requestMatchers(HttpMethod.GET, "/tags").permitAll()              // 获取全部标签接口
+						.requestMatchers(HttpMethod.GET, "/articles").permitAll()          // 获取全部文章接口
 						// 其他所有接口都需要认证
 						.anyRequest().authenticated()
 				)

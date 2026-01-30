@@ -25,7 +25,6 @@ spring:
   # Jackson配置（JSON序列化）
   jackson:
     default-property-inclusion: non_null  # 忽略 null 值字段
-    time-zone: GMT+8                      # 时区设置
     date-format: yyyy-MM-dd HH:mm:ss      # 日期格式
 
 # JWT 配置
