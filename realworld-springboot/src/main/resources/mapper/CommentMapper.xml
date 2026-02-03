@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.realworld.api.mapper.CommentMapper">
+    <select id="findCommentsByArticle" resultType="com.realworld.api.model.entity.Comment">
+        SELECT c.*
+        FROM comments c
+                 JOIN articles_users_comments auc ON auc.comment_id = c.id
+                 JOIN articles a ON a.id = auc.article_id
+        WHERE a.slug = #{slug}
+    </select>
+</mapper>

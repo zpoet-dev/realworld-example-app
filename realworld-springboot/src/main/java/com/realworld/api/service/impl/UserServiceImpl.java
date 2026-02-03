@@ -94,4 +94,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 		return new UpdateUserResponse(userVO);
 	}
+
+	/**
+	 * 根据用户 ID 获取用户名
+	 *
+	 * @param userId 用户 ID
+	 * @return 用户名
+	 */
+	public String UserIdToUserName(Long userId) {
+
+		return getOne(
+				new LambdaQueryWrapper<User>()
+						.select(User::getUsername)
+						.eq(User::getId, userId)
+		).getUsername();
+	}
 }

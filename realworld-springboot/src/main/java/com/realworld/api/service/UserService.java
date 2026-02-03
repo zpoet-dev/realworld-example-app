@@ -14,4 +14,6 @@ public interface UserService extends IService<User> {
 	GetCurrentUserResponse getCurrentUser();
 
 	UpdateUserResponse updateCurrentUser(UpdateUserDTO updateCurrentUserDTO);
+
+	String UserIdToUserName(Long userId);
 }
