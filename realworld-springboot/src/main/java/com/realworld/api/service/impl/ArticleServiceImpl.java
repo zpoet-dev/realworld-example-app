@@ -12,10 +12,8 @@ import com.realworld.api.model.entity.Article;
 import com.realworld.api.model.entity.Tag;
 import com.realworld.api.model.entity.User;
 import com.realworld.api.model.entity.association.ArticlesTags;
-import com.realworld.api.model.response.CreateArticleResponse;
-import com.realworld.api.model.response.GetArticleListResponse;
-import com.realworld.api.model.response.GetArticleResponse;
-import com.realworld.api.model.response.UpdateArticleBySlugResponse;
+import com.realworld.api.model.entity.association.UsersFavoriteArticles;
+import com.realworld.api.model.response.*;
 import com.realworld.api.model.vo.ArticleVO;
 import com.realworld.api.service.*;
 import com.realworld.api.utils.UserUtil;
@@ -122,7 +120,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 	 * @param tagName  标签名
 	 * @return 文章列表响应，包含文章列表及文章总数
 	 */
-	public GetArticleListResponse getArticleList(String userName, String tagName) {
+	public GetArticleListResponse getArticleList(String userName, String tagName, String favorited) {
 		List<Article> allArticlesInDataBase;
 
 		// 形参含有用户名
@@ -133,6 +131,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 		// 形参含有标签名
 		else if (tagName != null) {
 			allArticlesInDataBase = articleMapper.findArticlesByTag(tagName);
+		}
+
+		// 形参含有收藏人名称
+		else if (favorited != null) {
+			allArticlesInDataBase = articleMapper.findArticlesByUserName(favorited);
 		}
 
 		// 无形参
@@ -281,6 +284,111 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
 		return new GetArticleResponse(articleVO);
 	}
+
+	/**
+	 * 用户收藏文章
+	 *
+	 * @param slug
+	 * @return 被收藏文章响应
+	 * @throws RuntimeException 当文章已被该用户收藏时
+	 */
+	public FavoriteArticleResponse favoriteArticle(String slug) {
+		// 从数据库中获取文章实体
+		Article articleInDataBase = getOne(
+				new LambdaQueryWrapper<Article>()
+						.eq(Article::getSlug, slug)
+		);
+
+		// 获取当前登录用户
+		User currentUser = userUtil.getCurrentUser();
+
+		// 判断当前用户是否已经收藏该文章
+		boolean isCurrentUserFavorited = usersFavoriteArticlesService.isCurrentUserFavorited(articleInDataBase.getId());
+		if (isCurrentUserFavorited) {
+			throw new RuntimeException("has favorited");
+		}
+
+		// 保存记录进中间表
+		usersFavoriteArticlesService.save(
+				UsersFavoriteArticles.builder()
+						.userId(currentUser.getId())
+						.articleId(articleInDataBase.getId())
+						.build()
+		);
+
+		// 获取标签列表
+		List<String> tagList = tagMapper.findTagNamesByArticleId(articleInDataBase.getId());
+
+		// 获取文章作者
+		User author = userService.getById(articleInDataBase.getCreatedBy());
+
+		// 获取文章收藏信息
+		boolean favorited = usersFavoriteArticlesService.isCurrentUserFavorited(articleInDataBase.getId());
+		Integer favoritesCount = usersFavoriteArticlesService.getFavoritesCountByArticleId(articleInDataBase.getId());
+
+		// 构建响应
+		ArticleVO articleVO = ArticleVO.builder()
+				.title(articleInDataBase.getTitle())
+				.slug(articleInDataBase.getSlug())
+				.body(articleInDataBase.getBody())
+				.createdAt(articleInDataBase.getCreatedAt())
+				.updatedAt(articleInDataBase.getUpdatedAt())
+				.description(articleInDataBase.getDescription())
+				.tagList(tagList)
+				.author(author)
+				.favorited(favorited)
+				.favoritesCount(favoritesCount)
+				.build();
+
+		return new FavoriteArticleResponse(articleVO);
+	}
+
+	/**
+	 * 取消收藏文章
+	 *
+	 * @param slug
+	 * @return 被取消收藏的文章响应
+	 */
+	public UnfavoriteArticleResponse unfavoriteArticle(String slug) {
+		// 从数据库中获取被取消收藏的文章实体
+		Article articleInDataBase = getOne(
+				new LambdaQueryWrapper<Article>()
+						.eq(Article::getSlug, slug)
+		);
+
+		// 在关联表中删除记录
+		usersFavoriteArticlesService.remove(
+				new LambdaQueryWrapper<UsersFavoriteArticles>()
+						.eq(UsersFavoriteArticles::getArticleId, articleInDataBase.getId())
+		);
+
+		// 获取标签列表
+		List<String> tagList = tagMapper.findTagNamesByArticleId(articleInDataBase.getId());
+
+		// 获取文章作者
+		User author = userService.getById(articleInDataBase.getCreatedBy());
+
+		// 获取文章收藏信息
+		boolean favorited = usersFavoriteArticlesService.isCurrentUserFavorited(articleInDataBase.getId());
+		Integer favoritesCount = usersFavoriteArticlesService.getFavoritesCountByArticleId(articleInDataBase.getId());
+
+		// 构建响应
+		ArticleVO articleVO = ArticleVO.builder()
+				.title(articleInDataBase.getTitle())
+				.slug(articleInDataBase.getSlug())
+				.body(articleInDataBase.getBody())
+				.createdAt(articleInDataBase.getCreatedAt())
+				.updatedAt(articleInDataBase.getUpdatedAt())
+				.description(articleInDataBase.getDescription())
+				.tagList(tagList)
+				.author(author)
+				.favorited(favorited)
+				.favoritesCount(favoritesCount)
+				.build();
+
+		return new UnfavoriteArticleResponse(articleVO);
+	}
+
 
 	/**
 	 * 将 Article 实体转换为 ArticleVO

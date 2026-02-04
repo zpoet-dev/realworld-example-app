@@ -18,4 +18,12 @@
                  JOIN tags t ON at.tag_id = t.id
         WHERE t.tag_name = #{tagName}
     </select>
+
+    <select id="findArticlesByUserName" resultType="com.realworld.api.model.entity.Article">
+        SELECT *
+        FROM articles a
+                 JOIN users_favorite_articles ufa ON a.id = ufa.article_id
+                 JOIN users u ON ufa.user_id = u.id
+        WHERE u.username = #{userName}
+    </select>
 </mapper>

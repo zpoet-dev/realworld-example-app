@@ -2,10 +2,7 @@ package com.realworld.api.controller;
 
 import com.realworld.api.model.request.CreateArticleRequest;
 import com.realworld.api.model.request.UpdateArticleBySlugRequest;
-import com.realworld.api.model.response.CreateArticleResponse;
-import com.realworld.api.model.response.GetArticleListResponse;
-import com.realworld.api.model.response.GetArticleResponse;
-import com.realworld.api.model.response.UpdateArticleBySlugResponse;
+import com.realworld.api.model.response.*;
 import com.realworld.api.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +27,10 @@ public class ArticleController {
 	@GetMapping
 	public GetArticleListResponse getArticleList(
 			@RequestParam(required = false) String author,
-			@RequestParam(required = false) String tag
+			@RequestParam(required = false) String tag,
+			@RequestParam(required = false) String favorited
 	) {
-		return articleService.getArticleList(author, tag);
+		return articleService.getArticleList(author, tag, favorited);
 	}
 
 	// 根据 slug 获取文章详情
@@ -53,5 +51,17 @@ public class ArticleController {
 		articleService.deleteArticleBySlug(slug);
 
 		return Collections.emptyMap();
+	}
+
+	// 收藏文章
+	@PostMapping("/{slug}/favorite")
+	public FavoriteArticleResponse favoriteArticle(@PathVariable String slug) {
+		return articleService.favoriteArticle(slug);
+	}
+
+	// 取消收藏
+	@DeleteMapping("/{slug}/favorite")
+	public UnfavoriteArticleResponse unfavoriteArticle(@PathVariable String slug) {
+		return articleService.unfavoriteArticle(slug);
 	}
 }
