@@ -1,0 +1,21 @@
+// 全局样式入口文件
+
+// 1. 转发变量和混入（让其他文件可以使用）
+@forward './variables.scss';
+@forward './mixins.scss';
+
+// 2. 使用变量和混入（as * 表示不使用命名空间）
+@use './variables.scss' as *;
+@use './mixins.scss' as *;
+
+// 3. 基础样式
+@use './reset.scss';
+
+// 4. 工具类
+@use './utils.scss';
+
+// 5. 自定义全局样式
+#app {
+  width: 100%;
+  min-height: 100vh;
+}

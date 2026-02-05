@@ -1,0 +1,135 @@
+@use 'sass:color';
+@use './variables.scss' as *;
+
+// 响应式断点
+@mixin respond-above($breakpoint) {
+  @if $breakpoint == 'sm' {
+    @media (min-width: $breakpoint-sm) {
+      @content;
+    }
+  } @else if $breakpoint == 'md' {
+    @media (min-width: $breakpoint-md) {
+      @content;
+    }
+  } @else if $breakpoint == 'lg' {
+    @media (min-width: $breakpoint-lg) {
+      @content;
+    }
+  } @else if $breakpoint == 'xl' {
+    @media (min-width: $breakpoint-xl) {
+      @content;
+    }
+  } @else if $breakpoint == 'xxl' {
+    @media (min-width: $breakpoint-xxl) {
+      @content;
+    }
+  }
+}
+
+@mixin respond-below($breakpoint) {
+  @if $breakpoint == 'sm' {
+    @media (max-width: #{$breakpoint-sm - 1px}) {
+      @content;
+    }
+  } @else if $breakpoint == 'md' {
+    @media (max-width: #{$breakpoint-md - 1px}) {
+      @content;
+    }
+  } @else if $breakpoint == 'lg' {
+    @media (max-width: #{$breakpoint-lg - 1px}) {
+      @content;
+    }
+  } @else if $breakpoint == 'xl' {
+    @media (max-width: #{$breakpoint-xl - 1px}) {
+      @content;
+    }
+  } @else if $breakpoint == 'xxl' {
+    @media (max-width: #{$breakpoint-xxl - 1px}) {
+      @content;
+    }
+  }
+}
+
+// Flexbox 居中
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// 文本省略
+@mixin text-ellipsis($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// 清除浮动
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+// 圆角
+@mixin border-radius($radius: $border-radius) {
+  border-radius: $radius;
+}
+
+// 阴影
+@mixin box-shadow($shadow: $box-shadow) {
+  box-shadow: $shadow;
+}
+
+// 过渡动画
+@mixin transition($property: all, $duration: 0.2s, $timing: ease-in-out) {
+  transition: $property $duration $timing;
+}
+
+// 绝对定位居中
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// 覆盖整个父元素
+@mixin absolute-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+// 滚动条样式
+@mixin custom-scrollbar($width: 8px, $track-color: $gray-200, $thumb-color: $gray-400) {
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $track-color;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: $width / 2;
+
+    &:hover {
+      background: color.adjust($thumb-color, $lightness: -10%);
+    }
+  }
+}
