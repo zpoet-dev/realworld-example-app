@@ -389,6 +389,24 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 		return new UnfavoriteArticleResponse(articleVO);
 	}
 
+	/**
+	 * 获取当前登录用户关注的所有用户的文章
+	 *
+	 * @return 所有被关注用户的文章
+	 */
+	public GetArticleListResponse getAllFeedArticles() {
+		// 获取当前登录用户
+		User currentUser = userUtil.getCurrentUser();
+
+		List<Article> allArticlesInDataBase = articleMapper.getAllFeedArticles(currentUser.getId());
+
+		// 构建响应
+		List<ArticleVO> allArticlesForResponse = allArticlesInDataBase.stream()
+				.map(this::ArticleToArticleVO)
+				.toList();
+
+		return new GetArticleListResponse(allArticlesForResponse, allArticlesForResponse.size());
+	}
 
 	/**
 	 * 将 Article 实体转换为 ArticleVO

@@ -64,4 +64,10 @@ public class ArticleController {
 	public UnfavoriteArticleResponse unfavoriteArticle(@PathVariable String slug) {
 		return articleService.unfavoriteArticle(slug);
 	}
+
+	// 获取当前登录用户关注的所有用户的文章
+	@GetMapping("/feed")
+	public GetArticleListResponse getAllFeedArticles() {
+		return articleService.getAllFeedArticles();
+	}
 }

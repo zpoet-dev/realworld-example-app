@@ -15,4 +15,6 @@ public interface ArticleMapper extends BaseMapper<Article> {
 	List<Article> findArticlesByTag(@Param("tagName") String tagName);
 
 	List<Article> findArticlesByUserName(@Param("userName") String userName);
+
+	List<Article> getAllFeedArticles(@Param("userId") Long userId);
 }

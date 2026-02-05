@@ -24,4 +24,6 @@ public interface ArticleService extends IService<Article> {
 	FavoriteArticleResponse favoriteArticle(String slug);
 
 	UnfavoriteArticleResponse unfavoriteArticle(String slug);
+
+	GetArticleListResponse getAllFeedArticles();
 }

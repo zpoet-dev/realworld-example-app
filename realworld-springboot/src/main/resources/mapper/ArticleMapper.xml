@@ -26,4 +26,11 @@
                  JOIN users u ON ufa.user_id = u.id
         WHERE u.username = #{userName}
     </select>
+
+    <select id="getAllFeedArticles" resultType="com.realworld.api.model.entity.Article">
+        SELECT *
+        FROM articles a
+                 JOIN users_follow uf ON uf.followed_user_id = a.created_by
+        WHERE uf.follow_user_id = #{userId}
+    </select>
 </mapper>
